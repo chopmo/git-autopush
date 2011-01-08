@@ -5,7 +5,7 @@ POST_COMMIT=$HOOKS_FOLDER/post-commit
 
 if [ -d $HOOKS_FOLDER ]; then
     if [ -f $POST_COMMIT ]; then
-        echo "Post commit hook already exits, please 'git push' manually"
+        echo "Post commit hook already exits, please add 'git push' manually in .git/hooks/post-commit"
         exit -1
     fi
     echo "git push" > $POST_COMMIT

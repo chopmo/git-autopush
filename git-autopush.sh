@@ -1,5 +1,12 @@
 #!/bin/sh
 
+if [ "$1" = "--help" ] || [ "$1" = "-h" ] ; then
+	echo "usage: $0 [<remoterepo>]"
+	echo "will add a post-commit function in the git repo"
+	echo "which will automaticly push to the default or remote repo"
+	exit;
+fi 
+
 HOOKS_FOLDER=.git/hooks
 POST_COMMIT=$HOOKS_FOLDER/post-commit
 
@@ -8,7 +15,7 @@ if [ -d $HOOKS_FOLDER ]; then
         echo "Post commit hook already exits, please add 'git push' manually in .git/hooks/post-commit"
         exit -1
     fi
-    echo "git push" > $POST_COMMIT
+    echo "git push $1" > $POST_COMMIT
     chmod 755 $POST_COMMIT
     exit 0
 else

@@ -4,3 +4,7 @@ git-autopush
 Very simple bash script to add an auto-push post commit hook in the
 current Git repo.  After running this script, all committed changes to
 the repo will be immediately pushed to the configured remote/branch.
+
+
+Accepts a remote repo name as parameter
+if you would like to push to another repo

@@ -1,24 +1,54 @@
 #!/bin/sh
 
-if [ "$1" = "--help" ] || [ "$1" = "-h" ] ; then
-	echo "usage: $0 [<remoterepo>]"
-	echo "will add a post-commit function in the git repo"
-	echo "which will automaticly push to the default or remote repo"
-	exit;
-fi 
+usage() 
+{
+cat << EOF
+usage $0 [<options>] [<remoterepo>]
+
+will add a post-commit function in the git repo
+which will automaticly push to the default or remote repo
+
+OPTIONS:
+ -o	Overwrite post-commit
+ 
+EOF
+}
+
+OVERWRITE=0
+
+while getopts "ho" OPTION
+do
+	case $OPTION in 
+		h)
+			usage
+			exit 1
+		;;
+		o)
+			OVERWRITE=1
+		;;
+		?)
+			usage
+			exit
+		;;
+	esac
+done
 
 HOOKS_FOLDER=.git/hooks
 POST_COMMIT=$HOOKS_FOLDER/post-commit
 
 if [ -d $HOOKS_FOLDER ]; then
-    if [ -f $POST_COMMIT ]; then
+    if [ -f $POST_COMMIT ] && [ $OVERWRITE -eq 0 ]; then
         echo "Post commit hook already exits, please add 'git push' manually in .git/hooks/post-commit"
         exit 1
-	fi
-	echo "git push $1" > $POST_COMMIT
-	chmod 755 $POST_COMMIT
-		REPOSITORY_BASENAME=$(basename "$PWD") 
-	echo "added auto commit to $REPOSITORY_BASENAME"
+    fi
+    if [ $OVERWRITE -eq 1 ]; then
+	mv $POST_COMMIT "$POST_COMMIT.bak"
+	echo "moved old hook to $POST_COMMIT.bak"
+    fi
+    echo "git push $REMOTEREPO" > $POST_COMMIT
+    chmod 755 $POST_COMMIT
+    REPOSITORY_BASENAME=$(basename "$PWD") 
+    echo "added auto commit to $REPOSITORY_BASENAME"
     exit 0
 else
     echo "This command must be run in the root of a Git repository."

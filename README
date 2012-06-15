@@ -8,3 +8,6 @@ the repo will be immediately pushed to the configured remote/branch.
 
 Accepts a remote repo name as parameter
 if you would like to push to another repo
+
+OPTIONS:
+ -o	will overwrite the post commit hook

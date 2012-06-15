@@ -33,6 +33,7 @@ do
 	esac
 done
 
+shift $(( $OPTIND - 1 ))
 HOOKS_FOLDER=.git/hooks
 POST_COMMIT=$HOOKS_FOLDER/post-commit
 

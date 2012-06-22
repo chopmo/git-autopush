@@ -10,4 +10,5 @@ Accepts a remote repo name as parameter
 if you would like to push to another repo
 
 OPTIONS:
- -o	will overwrite the post commit hook
+ -o		will overwrite the post commit hook
+ -r [repo]	Remote Repo to push to

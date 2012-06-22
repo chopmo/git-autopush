@@ -3,20 +3,21 @@
 usage() 
 {
 cat << EOF
-usage $0 [<options>] [<remoterepo>]
+usage $0 [<options>] [-r <remoterepo>]
 
 will add a post-commit function in the git repo
 which will automaticly push to the default or remote repo
 
 OPTIONS:
  -o	Overwrite post-commit
- 
+ -r 	Remote Repo
 EOF
 }
+params="$@"
 
 OVERWRITE=0
 
-while getopts "ho" OPTION
+while getopts  "hor:" OPTION
 do
 	case $OPTION in 
 		h)
@@ -26,14 +27,13 @@ do
 		o)
 			OVERWRITE=1
 		;;
-		?)
-			usage
-			exit
+		r)
+			REMOTEREPO="$OPTARG"
 		;;
 	esac
 done
-
 shift $(( $OPTIND - 1 ))
+
 HOOKS_FOLDER=.git/hooks
 POST_COMMIT=$HOOKS_FOLDER/post-commit
 

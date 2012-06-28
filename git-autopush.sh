@@ -11,13 +11,14 @@ to the default or remote repo.
 OPTIONS:
  -o Overwrite any existing post-commit hook
  -r Remote repo
+ -a pushes all branches
 EOF
 }
 params="$@"
 
 OVERWRITE=0
-
-while getopts  "hor:" OPTION
+ALL=""
+while getopts  "hor:a" OPTION
 do
   case $OPTION in
     h)
@@ -29,6 +30,9 @@ do
     ;;
     r)
       REMOTEREPO="$OPTARG"
+    ;;
+    a)
+	ALL="--all"
     ;;
   esac
 done
@@ -46,7 +50,7 @@ if [ -d $HOOKS_FOLDER ]; then
     mv $POST_COMMIT "$POST_COMMIT.bak"
     echo "moved old hook to $POST_COMMIT.bak"
   fi
-  echo "git push $REMOTEREPO" > $POST_COMMIT
+  echo "git push $REMOTEREPO $ALL" > $POST_COMMIT
   chmod 755 $POST_COMMIT
   REPOSITORY_BASENAME=$(basename "$PWD")
   echo "added auto commit to $REPOSITORY_BASENAME"
